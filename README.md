@@ -7,4 +7,4 @@
 - Web layer consists of front end of the application
 - App layer consists of application code , we also call it as `business logic layer` 
 - Database layer consists of database where we can store & retrieve the data from the database <br> [ `retrieve` means to fetch or get data that is already stored in the database EX=Library ]
-
+![Project Image](PHOTOS/project3.2.PNG)
