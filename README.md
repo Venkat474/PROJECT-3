@@ -42,6 +42,7 @@ The reason why i am creating External load balancer & Internal load balancer is 
 <br> Generate an SSL certificate and apply it to the external load balancer to ensure secure communication.
 <br> Map the domain name to the external load balancer for public accessibility.
 ---
+# 🔹 VPC Creation 🔹
 ### `Go to AWS`
 Go to VPC [ Region = Mumbai ap-south-1 ] 
 <br> ➡️ Create VPC 
@@ -61,3 +62,6 @@ Now we need to edit the subnet name [ by default we are getting the subnet name 
 ![Project Image](PHOTOS/project3.3.PNG)
 ### We need to create 5 Security groups 
 currently we have 2 Security groups , we are not going to use this bcoz we need to open the required ports we create our own  ➼  Click on Security groups [ left side bar ] edit it as shown
+![Project Image](PHOTOS/project3.4.PNG)
+![Project Image](PHOTOS/project3.5.PNG)
+![Project Image](PHOTOS/project3.6.PNG)
