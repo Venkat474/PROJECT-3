@@ -19,8 +19,13 @@ The reason why i am creating External load balancer & Internal load balancer is 
 <br> In Database Tier if you want to maintain High Availability for your application usually we will select the databases as Multi-Availability zones or Multi AZs that means our databases should spread across different AZ
 <br> In this project i am going to use free tier based RDS instance so that u will not be charged anything when you are practicing also but if you want High Availability to your RDS also u can select High Availability or High AZs for your RDS in the process of creating the RDS.
 <br> 🔗 Github Link https://github.com/Venkat474/3TierArchitectureApp.git
+
+---
 ![Project Image](PHOTOS/project3.1.PNG)
 ![Project Image](PHOTOS/project3.2.PNG)
+
+---
+
 ### 🔹 Steps for Setting Up the Project Infrastructure 🔹
 1. VPC Creation
 <br> Design and create a Virtual Private Cloud (VPC) to serve as the foundation for the project infrastructure.
@@ -36,20 +41,23 @@ The reason why i am creating External load balancer & Internal load balancer is 
 <br> 6. SSL Certification and Domain Mapping
 <br> Generate an SSL certificate and apply it to the external load balancer to ensure secure communication.
 <br> Map the domain name to the external load balancer for public accessibility.
+---
 ### `Go to AWS`
 Go to VPC [ Region = Mumbai ap-south-1 ] 
-➡️ Create VPC 
-➡️ VPC & more [ i am going to create all at once so i am selecting this option ] 
-➡️ Name tag = demo-vpc
-➡️ IPV4 CIDR Block = 192.168.0.0/22 [ i will get 1024 IPs ] 
-➡️ IPV6 CIDR Block = No IPV6 CIDR Block
-➡️ Tenancy = Default [ If you selected Dedicated you will get charges ]
-➡️ Number of Availability Zones[AZs] = 2
-➡️ Number of Public Subnets = 2
-➡️ Number of Private Subnets = 4
-➡️ NAT Gateways = In 1 AZs [ only 1 NAT Gateway bcoz i need NAT Gateway in 1 AZ only,So whatever resources running in the private Subnets those resources need internet connectivity bcoz we need to download & install some packages. ]
-➡️ VPC endpoints = none [ Here u can also use S3 service as End points but here it is not required ] 
-➡️ Create VPC
+<br> ➡️ Create VPC 
+<br> ➡️ VPC & more [ i am going to create all at once so i am selecting this option ] 
+<br> ➡️ Name tag = demo-vpc
+<br> ➡️ IPV4 CIDR Block = 192.168.0.0/22 [ i will get 1024 IPs ] 
+<br> ➡️ IPV6 CIDR Block = No IPV6 CIDR Block
+<br> ➡️ Tenancy = Default [ If you selected Dedicated you will get charges ]
+<br> ➡️ Number of Availability Zones[AZs] = 2
+<br> ➡️ Number of Public Subnets = 2
+<br> ➡️ Number of Private Subnets = 4
+<br> ➡️ NAT Gateways = In 1 AZs [ only 1 NAT Gateway bcoz i need NAT Gateway in 1 AZ only,So whatever resources running in the private Subnets those resources need internet connectivity bcoz we need to download & install some packages. ]
+<br> ➡️ VPC endpoints = none [ Here u can also use S3 service as End points but here it is not required ] 
+<br> ➡️ Create VPC
 ### Once VPC gets created then we need to customize the subnet that is public subnets , private subnets & so on
 Now we need to edit the subnet name [ by default we are getting the subnet name ] ➡️ Click on Subnets [ left side bar ] edit it as shown 
-
+![Project Image](PHOTOS/project3.3.PNG)
+### We need to create 5 Security groups 
+currently we have 2 Security groups , we are not going to use this bcoz we need to open the required ports we create our own  ➼  Click on Security groups [ left side bar ] edit it as shown
