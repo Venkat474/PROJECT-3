@@ -18,6 +18,7 @@ The reason why i am creating External load balancer & Internal load balancer is 
  We are also going to create a NAT Gateway
 <br> In Database Tier if you want to maintain High Availability for your application usually we will select the databases as Multi-Availability zones or Multi AZs that means our databases should spread across different AZ
 <br> In this project i am going to use free tier based RDS instance so that u will not be charged anything when you are practicing also but if you want High Availability to your RDS also u can select High Availability or High AZs for your RDS in the process of creating the RDS.
+<br> 🔗 Github Link https://github.com/Venkat474/3TierArchitectureApp.git
 ![Project Image](PHOTOS/project3.1.PNG)
 ![Project Image](PHOTOS/project3.2.PNG)
 
