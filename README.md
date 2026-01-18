@@ -21,4 +21,35 @@ The reason why i am creating External load balancer & Internal load balancer is 
 <br> 🔗 Github Link https://github.com/Venkat474/3TierArchitectureApp.git
 ![Project Image](PHOTOS/project3.1.PNG)
 ![Project Image](PHOTOS/project3.2.PNG)
+### 🔹 Steps for Setting Up the Project Infrastructure 🔹
+1. VPC Creation
+<br> Design and create a Virtual Private Cloud (VPC) to serve as the foundation for the project infrastructure.
+<br> 2. S3 Bucket and IAM Role Setup
+<br> Create an S3 bucket and upload the application code.
+<br> Set up an IAM role with the necessary permissions and attach it to the EC2 instance.
+<br> 3. Database Configuration
+<br> Launch and configure an RDS instance to serve as the backend database.
+<br> 4. Application Tier Setup
+<br> Deploy application-tier resources, including the configuration of an internal load balancer for traffic distribution within the tier.
+<br> 5. Web Tier Setup
+<br> Provision web-tier resources and set up an external load balancer to manage incoming traffic from users.
+<br> 6. SSL Certification and Domain Mapping
+<br> Generate an SSL certificate and apply it to the external load balancer to ensure secure communication.
+<br> Map the domain name to the external load balancer for public accessibility.
+### `Go to AWS`
+Go to VPC [ Region = Mumbai ap-south-1 ] 
+➡️ Create VPC 
+➡️ VPC & more [ i am going to create all at once so i am selecting this option ] 
+➡️ Name tag = demo-vpc
+➡️ IPV4 CIDR Block = 192.168.0.0/22 [ i will get 1024 IPs ] 
+➡️ IPV6 CIDR Block = No IPV6 CIDR Block
+➡️ Tenancy = Default [ If you selected Dedicated you will get charges ]
+➡️ Number of Availability Zones[AZs] = 2
+➡️ Number of Public Subnets = 2
+➡️ Number of Private Subnets = 4
+➡️ NAT Gateways = In 1 AZs [ only 1 NAT Gateway bcoz i need NAT Gateway in 1 AZ only,So whatever resources running in the private Subnets those resources need internet connectivity bcoz we need to download & install some packages. ]
+➡️ VPC endpoints = none [ Here u can also use S3 service as End points but here it is not required ] 
+➡️ Create VPC
+### Once VPC gets created then we need to customize the subnet that is public subnets , private subnets & so on
+Now we need to edit the subnet name [ by default we are getting the subnet name ] ➡️ Click on Subnets [ left side bar ] edit it as shown 
 
