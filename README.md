@@ -13,7 +13,11 @@
 - 1️⃣ External Load Balancer <br> This will be attached to the web type that is the instances that are available in the public subnet.
 - 2️⃣ Internal Load Balancer <br> This i'm going to attach to the instances which are available in the private subnet that is app tier
 
-The reason why i am creating External load balancer & Internal load balancer is the in the private subnets i have my instances 
+The reason why i am creating External load balancer & Internal load balancer is the in the private subnets i have my instances running across 2 AZ if by any chance one of the EC2 Instance gets failed automatically a new instance should get created so that is the reason why i'm attaching the load balancer based upon the load balancer health check performance automatically it is going to create a new instances if the health check of any of the instances is not good ,similarly the external load balancer also performs the same thing the external load balancer we are going to attach it to the internet gateway 
+### `The reason why i'm attaching internet gateway to the external load balancer is bcoz the outside public wants to access the application which is available in the web tier.` 
+ We are also going to create a NAT Gateway
+<br> In Database Tier if you want to maintain High Availability for your application usually we will select the databases as Multi-Availability zones or Multi AZs that means our databases should spread across different AZ
+<br> In this project i am going to use free tier based RDS instance so that u will not be charged anything when you are practicing also but if you want High Availability to your RDS also u can select High Availability or High AZs for your RDS in the process of creating the RDS.
 ![Project Image](PHOTOS/project3.1.PNG)
 ![Project Image](PHOTOS/project3.2.PNG)
 
