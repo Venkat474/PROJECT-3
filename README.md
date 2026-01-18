@@ -42,7 +42,7 @@ The reason why i am creating External load balancer & Internal load balancer is 
 <br> Generate an SSL certificate and apply it to the external load balancer to ensure secure communication.
 <br> Map the domain name to the external load balancer for public accessibility.
 ---
-# 🔹 VPC Creation 🔹
+# 🔹 1️⃣ VPC Creation 🔹
 ### `Go to AWS`
 Go to VPC [ Region = Mumbai ap-south-1 ] 
 <br> ➡️ Create VPC 
@@ -65,3 +65,7 @@ currently we have 2 Security groups , we are not going to use this bcoz we need 
 ![Project Image](PHOTOS/project3.4.PNG)
 ![Project Image](PHOTOS/project3.5.PNG)
 ![Project Image](PHOTOS/project3.6.PNG)
+# 🔹 2️⃣ S3 Bucket and IAM Role Setup 🔹
+The reason for creating the S3 Bucket is we need to upload the code into the S3 Bucket , 
+<br> Bcoz in real time uploading the complete code into the EC2 Instances is a complex task & we don't do that generally 
+<br> So if u want to copy all the data to the EC2 Instances where our application should run ultimately our application should run in the EC2 instances so i have to copy the data that is available in the S3 bucket to the EC2 Instance so for that reason to avoid the complexity of uploading the code into the EC2 Instances i'm going to upload the code into the S3 bucket & then i'm going to get the code from the S3 bucket into the EC2 Instance so that is what we are going to do.
