@@ -69,3 +69,4 @@ currently we have 2 Security groups , we are not going to use this bcoz we need 
 The reason for creating the S3 Bucket is we need to upload the code into the S3 Bucket , 
 <br> Bcoz in real time uploading the complete code into the EC2 Instances is a complex task & we don't do that generally 
 <br> So if u want to copy all the data to the EC2 Instances where our application should run ultimately our application should run in the EC2 instances so i have to copy the data that is available in the S3 bucket to the EC2 Instance so for that reason to avoid the complexity of uploading the code into the EC2 Instances i'm going to upload the code into the S3 bucket & then i'm going to get the code from the S3 bucket into the EC2 Instance so that is what we are going to do.
+![Project Image](PHOTOS/project3.7.PNG)
