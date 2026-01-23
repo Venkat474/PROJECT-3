@@ -27,6 +27,7 @@ The reason why i am creating External load balancer & Internal load balancer is 
 ---
 
 ### 🔹 Steps for Setting Up the Project Infrastructure 🔹
+
 1. VPC Creation
 <br> Design and create a Virtual Private Cloud (VPC) to serve as the foundation for the project infrastructure.
 <br> 2. S3 Bucket and IAM Role Setup
@@ -89,4 +90,43 @@ What is the reason for creating IAM Role?
 <br>1 . Either we have to create a `Baston host` which is the concept in VPC, we have to create a baston host in the public subnet and by using the baston host we should connect to the resources that are there in the private subnet.
 <br>2 . Instead of creating the Baston host and complexing it ,In AWS we have a service which is called as `Systems manager` [ SSM ] so if we attach the appropriate role to the EC2 Instances which are there in the private subnets even though the virtual machines are there in the private subnets these EC2 Instances will not have the public IPs. So even though the virtual machines are in private subnets without any public IPs we can still connect to that VMs. how will we connect ,by using the SSM agent. 
 ![Project Image](PHOTOS/project3.8.PNG)
+![Project Image](PHOTOS/project3.9.PNG)
+**👉 The image shows that the SSM Agent inside an EC2 instance in a private subnet uses its IAM Role to securely connect to AWS Systems Manager, even without a public IP. ✅**
+<br> Now the role i'm going to attach/the policy that i'm going to attach is `Amazon EC2 role for SSM`
+<br> IAM Roles ➼ Roles { Left bar } ➼ create role ➼ 
+<br> 1. Aws Service ➼ use case ➼ EC2 ➼ next
+<br> 2. Permissions Policies ➼ AmazonEC2RoleforSSM ➼ Next
+<br> 3. Name ➼ Demo-EC2-Role ➼ Create role
 
+# 🔹 3️⃣ Database Configuration 🔹 ( We are using a RDS Service )
+`Go to RDS` ➼ Left side bar click on subnet group ➼ create DB subnet group ➼ Name = DB-SNGP ➼ 
+<br> vpc = demo-vpc { this is our custom vpc , not default } ➼ 
+<br> AZ = ap-south-1a , ap-south-1b  {we have 2 az in diagram , also see it is in mumbai region}
+<br> subnets = demo-vpc-subnet-DB1-ap-south-1a , demo-vpc-subnet-DB2-ap-south-1b = create
+#### Now we need to attach this created subnet group to the database that we are going to create that is RDS
+Left side bar click on Databases ➼ create database 
+<br> Choose a database creation method ➼ Standard create
+<br> Engine type ➼ My SQL { we are selecting this bcoz it's free } 
+<br> Edition ➼ MySQL community 
+<br> Engine Version ➼ MYSQL 8.0.35
+<br> Templates ➼ Free tier
+<br> DB instance identifier ➼ database-1
+<br> Master username ➼ admin
+<br> credentials management ➼ self managed = give own password , re-type password
+<br> Instance Configuration ➼ db.t4g.micro
+<br> Storage ➼ General Purpose SSD (gp2) = 20GIB
+<br> Connectivity ➼ Don't connect to an EC2 compute resource = IPV4
+<br> VPC ➼ Custom [demo-vpc]
+<br> DB ➼ Subnet group ➼ db-sngp
+<br> Public access ➼ No
+<br> VPC security group ➼ choose existing ➼ RDS-SG {select this remove default one}
+<br> AZ ➼ No preference
+<br> RDS Proxy ➼ ❌ don't need
+<br> Certificate authority ➼ default
+<br> Database authentication ➼ password authentication
+<br> Monitoring ➼ ❌
+<br> Additional Configuration = name ➼ ❌ = default: mysql8.0
+<br> Backup ➼ 🔲 Don't tick this
+<br> AWS KMS key ➼ aws/rds (default)
+<br> 🔲{don't tick this} Enable auto minor version upgrade
+<br> Maintenance window ➼ No preference ➼ create database
