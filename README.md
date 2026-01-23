@@ -70,3 +70,22 @@ The reason for creating the S3 Bucket is we need to upload the code into the S3 
 <br> Bcoz in real time uploading the complete code into the EC2 Instances is a complex task & we don't do that generally 
 <br> So if u want to copy all the data to the EC2 Instances where our application should run ultimately our application should run in the EC2 instances so i have to copy the data that is available in the S3 bucket to the EC2 Instance so for that reason to avoid the complexity of uploading the code into the EC2 Instances i'm going to upload the code into the S3 bucket & then i'm going to get the code from the S3 bucket into the EC2 Instance so that is what we are going to do.
 ![Project Image](PHOTOS/project3.7.PNG)
+- `Copy this Github repo` https://github.com/Venkat474/3TierArchitectureApp.git
+- Go to any folder in your local system/create any new folder
+- Go inside that folder click on `open git bash here` [ Why? Bcoz i going to download the code using git terminal ]
+- git clone https://github.com/Venkat474/3TierArchitectureApp.git
+- Go inside 3TierArchitectureApp we get 2 options .git & `application-code{Upload this entire folder into S3 bucket}`
+
+#### `Go to S3`
+- create bucket { Check region ➼ (Mumbai)ap-south-1 }
+- General purpose
+- name ➼ demo-3tier-project
+- object ownership ➼ ACLs disabled
+- create bucket {Now click on created bucket➼upload➼drag & drop `application-code` folder}
+
+####  Create IAM setup
+What is the reason for creating IAM Role?
+<br> Bcoz , we have 2 EC2 Instances in the app Tier & these 2 instances are there in private subnet & database is also available in the private subnet so we cannot expose the resources which are there in the private subnet to the outsiders so for that what we need to do we don't want to expose so if you want to connect to the resources that is your EC2 Instances & the RDS Database which are there in the Private Subnet. We have 2 options
+<br>1 . Either we have to create a `Baston host` which is the concept in VPC, we have to create a baston host in the public subnet and by using the baston host we should connect to the resources that are there in the private subnet.
+<br>2 . Instead of creating the Baston host and complexing it ,In AWS we have a service which is called as `Systems manager` [ SSM ] so if we attach the appropriate role to the EC2 Instances which are there in the private subnets even though the virtual machines are there in the private subnets these EC2 Instances will not have the public IPs. So even though the virtual machines are in private subnets without any public IPs we can still connect to that VMs. how will we connect ,by using the SSM agent. 
+![Project Image](PHOTOS/project3.8.PNG)
