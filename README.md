@@ -89,3 +89,4 @@ What is the reason for creating IAM Role?
 <br>1 . Either we have to create a `Baston host` which is the concept in VPC, we have to create a baston host in the public subnet and by using the baston host we should connect to the resources that are there in the private subnet.
 <br>2 . Instead of creating the Baston host and complexing it ,In AWS we have a service which is called as `Systems manager` [ SSM ] so if we attach the appropriate role to the EC2 Instances which are there in the private subnets even though the virtual machines are there in the private subnets these EC2 Instances will not have the public IPs. So even though the virtual machines are in private subnets without any public IPs we can still connect to that VMs. how will we connect ,by using the SSM agent. 
 ![Project Image](PHOTOS/project3.8.PNG)
+
