@@ -141,3 +141,16 @@ Left side bar click on Databases ➼ create database
 <br> configure storage ➼ 8GIB gp2 Root Volume
 <br> Advanced details ➼ IAM instance profile = Demo-EC2-Role ➼ Launch Instance ➼ connect ➼ Session manager ➼ connect 
 <br>  👉 
+
+
+
+
+<br> Go into the following path of cloned code "application-code/app-tier/DbConfig.js" and open 'Dbconfig.js' file and change the things accordingly as shown below;
+<br> module.exports = Object.freeze({
+<br>   DB_HOST: 'YOUR-DATABASE-ENDPOINT.ap-south-1.rds.amazonaws.com',
+<br>   DB_USER: 'admin',
+<br>   DB_PWD: 'kastro2025',
+<br>   DB_DATABASE: 'webappdb'
+<br>});
+<br>The reason for having the above info is our App Servers running in Private Subnets should be able to connect to the DB, for that connectivity it is going to use these credentials provided in DbConfig.js file. 
+<br>Update the above code and upload the Dbconfig.js file in the S3 bucket of 'app-tier' folder.
