@@ -130,3 +130,14 @@ Left side bar click on Databases ➼ create database
 <br> AWS KMS key ➼ aws/rds (default)
 <br> 🔲{don't tick this} Enable auto minor version upgrade
 <br> Maintenance window ➼ No preference ➼ create database
+<br> `Go to EC2` ➼ see region(Mumbai) ➼ Launch Instance ➼ Name = AppTierInstance
+<br> Quick start ➼ Linux aws
+<br> AMI ➼ Amazon Linux 2 AMI(HVM)-Kernels.10,SSD VolumeType[Free tier]
+<br> Instance type ➼ t2.micro
+<br> Key Pair ➼ proceed without a key pair
+<br> Network settings ➼ edit ➼ VPC = [demo-vpc] ➼ subnet = demo-vpc-subnet-App1-ap-south-1a
+<br> Auto = assign publicIP = Disable
+<br> Firewall ➼ select existing security group [ App-SG ]
+<br> configure storage ➼ 8GIB gp2 Root Volume
+<br> Advanced details ➼ IAM instance profile = Demo-EC2-Role ➼ Launch Instance ➼ connect ➼ Session manager ➼ connect 
+<br>  👉 
