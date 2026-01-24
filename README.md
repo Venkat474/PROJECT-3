@@ -139,18 +139,34 @@ Left side bar click on Databases ➼ create database
 <br> Auto = assign publicIP = Disable
 <br> Firewall ➼ select existing security group [ App-SG ]
 <br> configure storage ➼ 8GIB gp2 Root Volume
-<br> Advanced details ➼ IAM instance profile = Demo-EC2-Role ➼ Launch Instance ➼ connect ➼ Session manager ➼ connect 
-<br>  👉 
+<br> Advanced details ➼ IAM instance profile = Demo-EC2-Role ➼ Launch Instance ➼ connect ➼ Session manager ➼ connect
+**In this instance we will do the App Server Setup and DB Server Configuration. Executing the below commands;**
+<br>  👉 `sh-4.2$ sudo su`
+<br>  👉 `[root@ip-192-168-2-27 bin]# cd..`
+<br>  👉 `[root@ip-192-168-2-27 usr]# cd /home/ec2-user/`
+<br>  👉 `[root@ip-192-168-2-27 ec2-user]# ping 8.8.8.8` {If it works it means internet is coming to your instances, Ctrl+C to come out of it}
+<br>  👉 `[root@ip-192-168-2-27 ec2-user]# sudo yum install mysql -y &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  { Install mysql }
+<br> **Configure MySQL Database**
+<br> Connect to the database and perform basic configuration: Replace below info with your DB information
+<br> `mysql -h <DB EndPoint> -u admin -p` ----> Enter the Password i.e kastro2025 (this is DB password). If you couldn't connect, there is a problem with the SG of the DB.
 
 
 
 
-<br> Go into the following path of cloned code "application-code/app-tier/DbConfig.js" and open 'Dbconfig.js' file and change the things accordingly as shown below;
+
+
+
+
+
+
+
+
+**Go into the following path of cloned code `"application-code/app-tier/DbConfig.js"` and open `'Dbconfig.js'` file and change the things accordingly as shown below;**
 <br> module.exports = Object.freeze({
-<br>   DB_HOST: 'YOUR-DATABASE-ENDPOINT.ap-south-1.rds.amazonaws.com',
-<br>   DB_USER: 'admin',
-<br>   DB_PWD: 'kastro2025',
-<br>   DB_DATABASE: 'webappdb'
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   DB_HOST: 'YOUR-DATABASE-ENDPOINT.ap-south-1.rds.amazonaws.com',
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   DB_USER: 'admin',
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   DB_PWD: 'kastro2025',
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   DB_DATABASE: 'webappdb'
 <br>});
 <br>The reason for having the above info is our App Servers running in Private Subnets should be able to connect to the DB, for that connectivity it is going to use these credentials provided in DbConfig.js file. 
 <br>Update the above code and upload the Dbconfig.js file in the S3 bucket of 'app-tier' folder.
