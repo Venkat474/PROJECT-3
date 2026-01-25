@@ -145,14 +145,24 @@ Left side bar click on Databases ➼ create database
 <br>  👉 `[root@ip-192-168-2-27 bin]# cd..`
 <br>  👉 `[root@ip-192-168-2-27 usr]# cd /home/ec2-user/`
 <br>  👉 `[root@ip-192-168-2-27 ec2-user]# ping 8.8.8.8` {If it works it means internet is coming to your instances, Ctrl+C to come out of it}
-<br>  👉 `[root@ip-192-168-2-27 ec2-user]# sudo yum install mysql -y &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  { Install mysql }
+<br>  👉 `[root@ip-192-168-2-27 ec2-user]# sudo yum install mysql -y` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  { Install mysql }
 <br> **Configure MySQL Database**
 <br> Connect to the database and perform basic configuration: Replace below info with your DB information
 <br> `mysql -h <DB EndPoint> -u admin -p` ----> Enter the Password i.e kastro2025 (this is DB password). If you couldn't connect, there is a problem with the SG of the DB.
-
-
-
-
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  **`Ex: mysql -h database-1.c380a08uukyc.ap-south-1.rds.amazonaws.com -u admin -p`**
+<br>  👉 `[root@ip-192-168-2-27 ec2-user]# mysql -h database-1.c380a08uukyc.ap-south-1.rds.amazonaws.com -u admin -p` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {Give password }
+<br> **Lets create a database.** The database name i'm creating is `"webappdb"` (This is same name that you should give in DvConfig.js file);
+<br>  👉 `MYSQL [ (none) ] > CREATE DATABASE webappdb;`
+<br>  👉 `MYSQL [ (none) ] > SHOW DATABASES;` 
+<br>  👉 `MYSQL [ (none) ] > USE webappdb;` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { You will see 'Database changed' }
+<br> **Execute the below code as a single code. Here we are creating a table with the name `'transactions'`**
+<br>  👉 `MYSQL [ (webappdb) ] > CREATE TABLE IF NOT EXISTS transactions(`
+<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  `id INT NOT NULL AUTO_INCREMENT,` 
+<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  `amount DECIMAL(10,2),` 
+<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  `description VARCHAR(100),` 
+<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  `PRIMARY KEY(id)`
+<br> `);`
+<br>  👉 `MYSQL [ (webappdb) ] > SHOW TABLES;` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {To verify whether table got created or not;}
 
 
 
