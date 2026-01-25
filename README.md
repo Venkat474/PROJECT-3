@@ -200,7 +200,7 @@ Left side bar click on Databases ➼ create database
 <br>  👉 `[root@ip-192-168-2-27 ~]# sudo aws s3 cp s3://demo-3tier-project/application-code/app-tier/ app-tier --recursive`
 <br>  👉 `[root@ip-192-168-2-27 ~]# ls` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  { You will see 'app-tier' folder }
 <br>  👉 `[root@ip-192-168-2-27 ~]# cd app-tier/`
-<br>  👉 `[root@ip-192-168-2-27 app-tier]# npm install`
+<br>  👉 `[root@ip-192-168-2-27 app-tier]# npm install`  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  { Node Package Manager (CLI) used to install packages }
 <br>  👉 `[root@ip-192-168-2-27 app-tier]# ls`  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {You will see 'index.js' file. We have to start that}
 <br>  👉 `[root@ip-192-168-2-27 app-tier]# pm2 start index.js` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  {You will see the status as 'online'}
 <br>  👉 `[root@ip-192-168-2-27 app-tier]# pm2 status` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {To verify: ➼ pm2 list (or) pm2 status }
@@ -209,7 +209,8 @@ Left side bar click on Databases ➼ create database
 <br> **Verify that the application is running by executing**
 <br>  👉 `[root@ip-192-168-2-27 app-tier]# curl http://localhost:4000/health` { It should return: This is the health check. }
 <br> **With this we have completed the application configuration.**
-### Creation of Internal Load Balancer for App Tier
+
+### 4️⃣.2️⃣ Creation of Internal Load Balancer for App Tier
 First we need to create the target groups and then we need to attach this target group to the internal load balancer ,so firstly we will create the internal load balancer & we will update the nginx configuration with internal load balancer DNS name , by using the DNS name of the internal load balancer we are going to update the nginx configuration , Nginx is a web server just like tomcat here we are going to use nginx for this project
 <br> **`Go to EC2`** 
 <br> **Go to Target Groups** at left side bar ➼ create target groups 
@@ -239,3 +240,40 @@ First we need to create the target groups and then we need to attach this target
 <br> Upload the updated nginx.conf file to the S3 bucket
 <br> **Update the above code and upload the nginx.conf file in the S3 bucket of 'application-code' folder.**
 <br> `Go to S3` ➼ Go to this path `application-code/` ➼ click on upload {automatically it gets replace to new} ➼ Drag and Drop ➼ upload 
+# 🔹 5️⃣ Creation of Web tier setup 🔹  resources including External Load Balancer  
+**`Go to EC2`** = Launch Instance  
+<br> = name ➼ Web-Tier-Instance  
+<br> = Quick start ➼ Amazon linux 
+<br> = AMI ➼ Amazon Linux 2 AMI (HVM) - kernel 5.10,SSD Volume Type {Free Tier Eligible} 
+<br> = Instance type ➼ t2.micro 
+<br> = Key pair ➼ Proceed without a key pair 
+<br> = Network settings ➼ edit = VPC = demo-vpc = subnet = demo-vpc-subnet-public1-ap-south-1a 
+<br> = Auto-assign public IP ➼ Enable
+<br> = Firewall ➼ Select existing security group ➼ Web-SG
+<br> = Advanced details ➼ IAM = Demo-EC2-Role ➼ Launch Instance ➼ Connect ➼ Session Manager ➼ Connect
+<br>  👉 `sh-4.2$ sudo -su ec2-user` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { To work as an ec2-user } 
+<br>  👉 `[ec2-user@ip-192-168-0-38 bin]$ cd /home/ec2-user`
+<br>  👉 `[ec2-user@ip-192-168-0-38 ~]$ curl -o- https://raw.githubusercontent.com/avizway1/aws_3tier_architecture/main/install.sh | bash `
+<br>  👉 `[ec2-user@ip-192-168-0-38 ~]$ source ~/.bashrc`
+<br>  👉 `[ec2-user@ip-192-168-0-38 ~]$ nvm install 16`
+<br>  👉 `[ec2-user@ip-192-168-0-38 ~]$ nvm use 16`
+**EX:➼ aws s3 cp s3://<S3 Bucker Name>/application-code/web-tier/ web-tier --recursive**
+<br>  👉 `[ec2-user@ip-192-168-0-38 ~]$ aws s3 cp s3://demo-3tier-project/application-code/web-tier/ web-tier --recursive`
+<br>  👉 `[ec2-user@ip-192-168-0-38 ~]$ ls` { You will see 'web-tier' }
+<br>  👉 `[ec2-user@ip-192-168-0-38 ~]$ cd web-tier`
+<br>  👉 `[ec2-user@ip-192-168-0-38 web-tier]$ npm install`
+<br>  👉 `[ec2-user@ip-192-168-0-38 web-tier]$ npm run build`
+<br>  👉 `[ec2-user@ip-192-168-0-38 web-tier]$ sudo amazon-linux-extras install nginx1 -y` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { To install nginx }
+**Update Nginx configuration:**
+<br>  👉 `[ec2-user@ip-192-168-0-38 web-tier]$ cd /etc/nginx` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { Your are in nginx path }
+<br>  👉 `[ec2-user@ip-192-168-0-38 nginx]$ ls` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { You will see 'nginx.conf' file }
+**We need to remove this nginx.conf file bcoz this was not updated one**
+<br>  👉 `[ec2-user@ip-192-168-0-38 nginx]$ sudo rm nginx.conf`
+**EX:➼ sudo aws s3 cp s3://<S3 Bucker Name>/application-code/nginx.conf**
+<br>  👉 `[ec2-user@ip-192-168-0-38 nginx]$ sudo aws s3 cp s3://demo-3tier-project/application-code/nginx.conf `
+<br>  👉 `[ec2-user@ip-192-168-0-38 nginx]$ sudo service nginx restart`
+<br>  👉 `[ec2-user@ip-192-168-0-38 nginx]$ chmod -R 755 /home/ec2-user`
+<br>  👉 `[ec2-user@ip-192-168-0-38 nginx]$ sudo chkconfig nginx on`
+<br> To check the output of the App, we can check using the Web-Tier-Instance public IP. 
+<br> { In Web-Tier-Instance } But before checking lets open port no 80 Go to Security ➼ Security groups ➼ Edit inbound rules ➼ Add rule ➼  http ➼ Anywhere IPv4 ➼ 0.0.0.0/0 ➼ Save rules ➼ Now paste the pubic ip of Web-Tier-Instance in new tab of browser ----> You will see the app ----> Enter the data in the app
+<br> **We need to create a custom domain using route 53 we should not give public ip or dns to anyone**
