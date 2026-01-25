@@ -277,3 +277,29 @@ First we need to create the target groups and then we need to attach this target
 <br> To check the output of the App, we can check using the Web-Tier-Instance public IP. 
 <br> { In Web-Tier-Instance } But before checking lets open port no 80 Go to Security ➼ Security groups ➼ Edit inbound rules ➼ Add rule ➼  http ➼ Anywhere IPv4 ➼ 0.0.0.0/0 ➼ Save rules ➼ Now paste the pubic ip of Web-Tier-Instance in new tab of browser ----> You will see the app ----> Enter the data in the app
 <br> **We need to create a custom domain using route 53 we should not give public ip or dns to anyone**
+In Real time we are not going to deliver the applications using the public IP Address then what we need to do is we need to create the external load balancer 
+we are not going to give the DNS name of the external load balancer to the end users we need to map the DNS name to the load balancer to the Route53 custom domain 
+Firstly we need to create the security group then we need to create the ELB { we also call as internet facing load balancer }
+**`Go to target groups`** ➼ Create target group ➼ 
+Basic configuration  ➼ instances
+Target group name  ➼ External-Web-TG
+Port  ➼ HTTP , 80
+VPC  ➼ demo-vpc
+Protocol version  ➼ HTTP1
+Health check protocol  ➼ HTTP 
+Health check path  ➼ /  ➼ next
+tick Web-Tier-Instance  ➼ include as pending below  ➼ create target group
+Now we need to create load balancer and we need to attach this target group 
+**`Go to load balancers`**  ➼ create load balancer  ➼ 
+load balancer  ➼ Application load balancer
+Name  ➼ External-Web-ALB
+scheme  ➼ internet facing
+load balancer IP Address  ➼ IPV4
+Network mapping  ➼ demo-vpc { select this one }
+<br> AZ➼`ap-south-1a(aps1-az1)` subnet=`demo-vpc-subnet-public1-ap-south-1a`,`ap-south-1b(aps1-az3)` subnet=`demo-vpc-subnet-public2-ap-south-1b`
+<br> Security groups ➼ Web-ALB-SG { remove default }
+<br> Listeners and routing ➼ Protocol = HTTP ➼ Port = 80 ➼ Default action = External-Web-TG ➼ create load balancer 
+Now we will create the certificate manager service in AWS , now we need to route the traffic to custom domain 
+### Purchasing domain using Route53
+`Go to Route53` ➼ 
+choose your starting point ➼ Register a domain ➼ Get started ➼ Search for domain = learnwithvenkat.com ➼ proceed to checkout {auto renew off} ➼ next ➼ contact information  ➼ next ➼ review & submit 
