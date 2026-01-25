@@ -140,7 +140,8 @@ Left side bar click on Databases ➼ create database
 <br> Firewall ➼ select existing security group [ App-SG ]
 <br> configure storage ➼ 8GIB gp2 Root Volume
 <br> Advanced details ➼ IAM instance profile = Demo-EC2-Role ➼ Launch Instance ➼ connect ➼ Session manager ➼ connect
-**In this instance we will do the App Server Setup and DB Server Configuration. Executing the below commands;**
+# 🔹 4️⃣ Creation of App Tier Resources 🔹 
+###  4️⃣.1️⃣ **In this instance we will do the App Server Setup and DB Server Configuration. Executing the below commands;**
 <br>  👉 `sh-4.2$ sudo su`
 <br>  👉 `[root@ip-192-168-2-27 bin]# cd..`
 <br>  👉 `[root@ip-192-168-2-27 usr]# cd /home/ec2-user/`
@@ -163,13 +164,14 @@ Left side bar click on Databases ➼ create database
 <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  `PRIMARY KEY(id)`
 <br> `);`
 <br>  👉 `MYSQL [ (webappdb) ] > SHOW TABLES;` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {To verify whether table got created or not;}
-
-
-
-
-
-
-
+<br> **Lets insert some info into the table**
+<br>  👉 `MYSQL [ (webappdb) ] >INSERT INTO transactions (amount, description) VALUES ('400', 'groceries');` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {transactions represents table name}
+<br> **To verify whether the entry is really created or not**
+<br> 👉 `MYSQL [ (webappdb) ] > SELECT * FROM transactions;` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {You will see the info you have written}
+<br> Till now what we are doing is we are entering the data from the instance directly into the database we are entering but this is not my real time scenerio , in real time what will happen is when application is open to public users will enter the data whenever users will enter the data you will able to see the data here in the database but currenlty i have shown the how to create enteries inside the database . 
+<br> If u want to summarize this ,From app server i am able to connect to my database server and i am able to write some information inside the database server like amount and groceries etc., now here we have connected private instance in private subnet of apptier & database instance which is there in the database tier remember database tier is not required to be connected with the app tier 
+<br> **To come out of the DB;**
+<br> 👉 `MYSQL [ (webappdb) ] > exit` (You will see 'ec2-user' at the end of command line and at the beginning of command line you will see 'root')
 
 **Go into the following path of cloned code `"application-code/app-tier/DbConfig.js"` and open `'Dbconfig.js'` file and change the things accordingly as shown below;**
 <br> module.exports = Object.freeze({
@@ -179,4 +181,61 @@ Left side bar click on Databases ➼ create database
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   DB_DATABASE: 'webappdb'
 <br>});
 <br>The reason for having the above info is our App Servers running in Private Subnets should be able to connect to the DB, for that connectivity it is going to use these credentials provided in DbConfig.js file. 
-<br>Update the above code and upload the Dbconfig.js file in the S3 bucket of 'app-tier' folder.
+<br> **Update the above code and upload the Dbconfig.js file in the S3 bucket of 'app-tier' folder.**
+<br> `Go to S3` ➼ Go to this path `application-code/app-tier` ➼ click on upload {automatically it gets replace to new} ➼ Drag and Drop ➼ upload 
+<br> **Install and Configure Node.js and PM2** {Bcoz we are working with the nodejs application) 
+<br>  👉 `[root@ip-192-168-2-27 ec2-user]# curl -o- https://raw.githubusercontent.com/avizway1/aws_3tier_architecture/main/install.sh | bash`
+<br>  👉 `[root@ip-192-168-2-27 ec2-user]# source ~/.bashrc`
+<br>  👉 `[root@ip-192-168-2-27 ec2-user]# nvm install 16` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { Node Version Manager (for managing Node.js versions) }
+<br>  👉 `[root@ip-192-168-2-27 ec2-user]# nvm use 16` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { You will see 'Now using node v16.20.2 }
+<br> **Now we need to run node as a service, we will install pm2**
+<br>  👉 `[root@ip-192-168-2-27 ec2-user]# npm install -g pm2` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {You will see 'found 0 vulnerabilities}
+<br>  👉 `[root@ip-192-168-2-27 ec2-user]# pwd` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  { /home/ec2-user }
+<br>  👉 `[root@ip-192-168-2-27 ec2-user]# cd ..`
+<br>  👉 `[root@ip-192-168-2-27 home]# cd ..`
+<br>  👉 `[root@ip-192-168-2-27 /]# cd ~/`
+<br>  👉 `[root@ip-192-168-2-27 ~]# `
+<br> **Now we need to copy the code that is available in the s3 bucket to EC2 Instance `OR` Download application code from S3 and start the application**
+<br> Ex:- sudo aws s3 cp s3://<S3BucketName>/application-code/app-tier/ app-tier --recursive
+<br>  👉 `[root@ip-192-168-2-27 ~]# sudo aws s3 cp s3://demo-3tier-project/application-code/app-tier/ app-tier --recursive`
+<br>  👉 `[root@ip-192-168-2-27 ~]# ls` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  { You will see 'app-tier' folder }
+<br>  👉 `[root@ip-192-168-2-27 ~]# cd app-tier/`
+<br>  👉 `[root@ip-192-168-2-27 app-tier]# npm install`
+<br>  👉 `[root@ip-192-168-2-27 app-tier]# ls`  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {You will see 'index.js' file. We have to start that}
+<br>  👉 `[root@ip-192-168-2-27 app-tier]# pm2 start index.js` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  {You will see the status as 'online'}
+<br>  👉 `[root@ip-192-168-2-27 app-tier]# pm2 status` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {To verify: ➼ pm2 list (or) pm2 status }
+<br>  👉 `[root@ip-192-168-2-27 app-tier]# pm2 logs` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {You will not see anything in red colour, everything in white colour you should see , To come out CTRL + C ,At the end you will see something like ➼ http://localhost:4000 but if u open this it will not work right now}
+<br>  👉 `[root@ip-192-168-2-27 app-tier]# pm2 save`  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { To save the configuration }	
+<br> **Verify that the application is running by executing**
+<br>  👉 `[root@ip-192-168-2-27 app-tier]# curl http://localhost:4000/health` { It should return: This is the health check. }
+<br> **With this we have completed the application configuration.**
+### Creation of Internal Load Balancer for App Tier
+First we need to create the target groups and then we need to attach this target group to the internal load balancer ,so firstly we will create the internal load balancer & we will update the nginx configuration with internal load balancer DNS name , by using the DNS name of the internal load balancer we are going to update the nginx configuration , Nginx is a web server just like tomcat here we are going to use nginx for this project
+<br> **`Go to EC2`** 
+<br> **Go to Target Groups** at left side bar ➼ create target groups 
+<br> Basic configuration ➼ Instances
+<br> Target group name ➼ App-Internal-TG 
+<br> Port ➼ Http = 4000
+<br> IP Address ➼ IPV4
+<br> VPC ➼ demo-vpc
+<br> Protocol version ➼ HTTP1
+<br> Health checks protocol ➼ HTTP = Health check path ➼ /health ➼ Next
+<br> It will ask which instance u are going to register for this target groups? `Select AppTierInstance` ➼ click on Include as pending below ➼ createTargetGroup
+<br> **Go to Load Balancers** at left bar ➼ create load balancer 
+<br> Load Balancer type ➼ Application load balancer (create) ➼ Load balancer name = App-Internal-LB
+<br> Scheme ➼ Internal
+<br> Load balancer IP Address ➼ IPV4
+<br> VPC ➼ demo-vpc
+<br> AZ➼`ap-south-1a(aps1-az1)` subnet=`demo-vpc-subnet-App1-ap-south-1a`,`ap-south-1b(aps1-az3)` subnet=`demo-vpc-subnet-App2-ap-south-1b`
+<br> Security groups ➼ Internal-ALB-SG { remove default }
+<br> Listeners and routing ➼ Protocol = HTTP ➼ Port = 80 ➼ Default action = App-Internal-TG ➼ create load balancer 
+<br> Now we have got the DNS name , we are going to configure it in the Nginx file `application-code/nginx.conf` 
+<br> **Goto the downloaded code folder in local system ----> Open nginx.conf file and in the end of the file you will see something like below;**
+<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;       #proxy for internal lb
+<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;       location /api/{
+<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;               proxy_pass http://[REPLACE-WITH-INTERNAL-LB-DNS]:80/;
+<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;       }
+<br> **Replace the LB DNS in the above** Ex:➼ proxy_pass http://internal-App-Internal-LB-2141813828.ap-south-1.elb.amazonaws.com:80/;
+<br> Upload the updated nginx.conf file to the S3 bucket
+<br> **Update the above code and upload the nginx.conf file in the S3 bucket of 'application-code' folder.**
+<br> `Go to S3` ➼ Go to this path `application-code/` ➼ click on upload {automatically it gets replace to new} ➼ Drag and Drop ➼ upload 
